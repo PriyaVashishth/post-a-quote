@@ -1,0 +1,76 @@
+<!DOCTYPE html5>
+
+<html>
+
+<head>
+
+	<title>Go Socio!</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+	<meta name="HandheldFriendly" content="true">
+
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-toggle.min.css">
+	<link rel="stylesheet" type="text/css" href="style1.css">
+
+	<script type="text/javascript" src="jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap-toggle.min.js"></script>
+	<script type="text/javascript" src="angular.min.js"></script>
+	<script type="text/javascript" src="script1.js"></script>
+
+</head>
+
+<body>
+
+	<div id="buttons" class="text-center btn-group-vertical col-md-3" >
+		<input type="button" class="btn btn-success btn-lg" value="Find Quote" id="btnQuote" data-toggle="modal" data-tooltip="tooltip" data-placement="bottom" data-animation="true" title="Pick a Random Quote from the File"/>
+		<input type="button" class="btn btn-success btn-lg" value="Create Image" id="btnCreateImage" data-toggle="modal" data-tooltip="tooltip" data-placement="bottom" data-animation="true" title="Convert the Quote into an Image"/>
+		<input type="button" class="btn btn-success btn-lg" value="Post" id="btnPost" data-toggle="modal" data-tooltip="tooltip" data-placement="bottom" data-animation="true" title="Post the Image to my Social Media Account" onclick="PostImageToFacebook(window.authToken)" />
+	</div>
+
+
+	<div class="col-md-6"><canvas id="image"/></canvas></div> -->
+    <div id="fb-root"></div>
+
+
+    <!-- Script required for displaying tooltips on buttons -->
+    <script type="text/javascript">
+		$(function () { $("[data-tooltip='tooltip']").tooltip(); });
+	</script>
+
+	<!-- Script for connecting to Facebook -->
+	<script type="text/javascript">
+        $(document).ready(function () {
+            $.ajaxSetup({
+                cache: true
+            });
+            $.getScript('//connect.facebook.net/en_UK/all.js', function () {
+                // Load the APP / SDK
+                FB.init({
+                    appId: '477487472596436', 		// My App ID from the App Dashboard
+                    cookie: true, 					// set sessions cookies to allow your server to access the session?
+                    xfbml: true, 					// parse XFBML tags on this page?
+                    frictionlessRequests: true,
+                    oauth: true
+                });
+                FB.login(function (response) {
+                    if (response.authResponse) {
+                        window.authToken = response.authResponse.accessToken;               //authToken
+                        console.log(window.authToken);
+                    } else {
+                    	console.log ('Couldn\'t process');
+                    }
+                }, {
+                    scope: 'publish_actions,publish_stream'
+                });
+            });
+            
+            //console.log("Posted to Facebook");
+        });
+    </script>
+
+</body>
+</html>
